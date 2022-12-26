@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+  {% block content %}
+  <div class="content-page">
+   <div>
+      {% for key, value in form.errors.items %}
+         <p style="color:red">{{value}}</p>
+      {% endfor %}
+   </div>
+   
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-sm-12">
+             <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                   <div class="header-title">
+                      <h4 class="card-title">Item List</h4>
+                   </div>
+                </div>
+                <div class="card-body">
+                   <div class="table-responsive">
+                      <div class="row justify-content-between">
+                         <div class="col-sm-6 col-md-6">
+                            <div id="user_list_datatable_info" class="dataTables_filter">
+                               
+                            </div>
+                         </div>
+                         <div class="col-sm-6 col-md-6">
+                            <div class="user-list-files d-flex">
+                            
+                               <button class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+                                 Add Item 
+                               </button>
+                           
+                            </div>
+                         </div>
+                      </div>
+                      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                             
+                              <form  enctype="multipart/form-data"  method="POST" class="probootstrap-form-appointment">
+                                {% csrf_token %}
+                                 {% for field in form %}
+                                     <div class="form-group">
+                                            {% if field.name == "stock" %}Stock &nbsp;{% endif %}
+                                            {% if field.name == "item_price" %} Price &nbsp; {% endif %}
+
+                                        {% if field.name == "in_stock" %}In Stock &nbsp;{% endif %}
+                                        {% if field.name == "image" %} Image &nbsp; {% endif %}
+                                            {{field}}
+                
+                                     </div>
+                                 {% endfor %}
+                               
+                            </div>
+                            <div class="modal-footer">
+                              <input
+                              type="submit"
+                              value="Submit Form"
+                              class="btn btn-secondary"
+                              name="search" id="search"
+                            />
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                           </form>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <table id="user-list-table" class="table table-striped dataTable mt-4" role="grid"
+                         aria-describedby="user-list-page-info">
+                         {% if count > 0 %}
+                         <thead>
+                            <tr class="ligth">
+                            <th>Image</th>
+                              <th>Name</th>
+                               <th>Stock</th>
+                               <th>Date Added</th>
+                               <th>Item Price</th>
+                                <th>Item Type</th>
+                                <th>In Stock</th>
+                            </tr>
+                         </thead>
+                        
+
+                         <tbody className="tableBody">
+                          {% for item in items %}
+                            <tr>
+                              <td><img class="avatar-50 rounded-small" src="{{item.image.url}}" alt="Item image"/></td>
+                               <td>{{item.name}}</td>
+                               <td>{{item.stock}}</td>
+                               <td>{{item.date_added}}</td>
+                               <td>₦{{item.item_price}}</td>
+                               <td>{% if item.in_stock %} Active {% endif %} {% if person.status == False %} Not Active {% endif %}</td>
+                             
+                               
+                               <td> <a href="/delete_item/{{item.id}}"><span>Remove</span>&nbsp;<span style="cursor: pointer" class="icon-trash"></span></a>
+                               </td>
+                            </tr>
+                        
+                         
+                            {% endfor %}
+                         </tbody>
+
+                        {% else %}
+                        <br></br>
+                            <h2>There is no item currently added</h2>
+                        <br></br>  
+                        {% endif %}
+                      </table>
+                     
+                   </div>
+                   {% if count > 0 %}
+
+                   <div class="row justify-content-between mt-3">
+                      <div id="user-list-page-info" class="col-md-6">
+                         <span>Showing {{start|add:1}} to {% if list_count >= count %}{{count}}{% endif %} {%if count >  list_count %} {{list_count}} {% endif %} of {{count}} entries</span>
+                      </div>
+                      <div class="col-md-6">
+                         <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-end mb-0">
+
+                               <li class="page-item {% if pk == 0 %}disabled{% endif %}">
+                                  <a class="page-link" href="/inventory/{{pk |sub:1}}" tabindex="-1" aria-disabled="true">Previous</a>
+                               </li>
+                               {% for i in  tabs %}
+                                <li class="page-item  {% if i == tab %}active{% endif %}"><a class="page-link" href="/inventory/{{i |sub:1}}">{{i}}</a></li>
+                              {% endfor %}
+
+
+                               <li class="page-item {% if tab == tab_count %}disabled{% endif %}">
+                                  <a class="page-link"  href="/inventory/{{pk |add:1}}">Next</a>
+                               </li>
+
+                            </ul>
+                         </nav>
+                      </div>
+                   </div>
+                   {% endif %}
+
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+          </div>
+        </div>
+
+     
+        
+       
+  
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+
+  

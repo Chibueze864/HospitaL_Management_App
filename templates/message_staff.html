@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container py-4">
+
+  <!-- Bootstrap 5 starter form -->
+  <br></br>
+  <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+    {% csrf_token %}
+    <!-- Name input -->
+    <div class="mb-3">
+      <br></br>
+      <h4 class="form-label">Message Staff</h4>
+    </div>
+
+
+    <!-- Message input -->
+    <div class="mb-3">
+      <textarea class="form-control" name="mail" id="message" type="text" placeholder="Message {{mail}}" style="height: 10rem;" data-sb-validations="required"></textarea>
+      <div class="invalid-feedback" data-sb-feedback="message:required">Message is required.</div>
+    </div>
+    <div class="mb-3"></div>
+
+    <!-- Form submissions success message -->
+    <div class="d-none" id="submitSuccessMessage">
+      <div class="text-center mb-3">Form submission successful!</div>
+    </div>
+
+    <!-- Form submissions error message -->
+    <div class="d-none" id="submitErrorMessage">
+      <div class="text-center text-danger mb-3">Error sending message!</div>
+    </div>
+
+    <!-- Form submit button -->
+    <div class="d-grid">
+      <button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button>
+    </div>
+
+  </form>
+
+</div>
+<br></br>
+
+{% endblock %}
