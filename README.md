@@ -1,3 +1,5 @@
 # Hospital Management App
-A hospital management app built in Django
+A hospital management app built in Django.
+
+
 Styles implemented using bootstrap
